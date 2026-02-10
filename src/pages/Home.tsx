@@ -54,25 +54,25 @@ const Home = () => {
       </div>
 
       <div className="px-4 -mt-4 space-y-5">
-        {/* Filter tabs */}
-        <div className="flex gap-2 overflow-x-auto hide-scrollbar pt-1">
-          {filters.map(f => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              className={cn(
-                'px-4 py-2 rounded-full text-xs font-display font-bold whitespace-nowrap transition-colors',
-                activeFilter === f ? 'bg-accent text-accent-foreground' : 'bg-card text-muted-foreground border border-border'
-              )}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-
-        {/* My Products */}
+        {/* 1. My Products with bar-shaped filter tabs */}
         <div>
           <h2 className="font-display font-bold text-base text-foreground mb-3">My Products</h2>
+          <div className="flex bg-muted rounded-xl p-1 mb-3">
+            {filters.map(f => (
+              <button
+                key={f}
+                onClick={() => setActiveFilter(f)}
+                className={cn(
+                  'flex-1 py-2 rounded-lg text-xs font-display font-bold transition-all',
+                  activeFilter === f
+                    ? 'bg-card text-foreground shadow-sm'
+                    : 'text-muted-foreground'
+                )}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
           <div className="space-y-3">
             {products.map((product, i) => (
               <motion.div key={product.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
@@ -82,8 +82,25 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Recommended actions */}
+        {/* 2. Quick Access */}
         <div>
+          <h2 className="font-display font-bold text-base text-foreground mb-3">Quick Access</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {shortcuts.map(s => (
+              <button
+                key={s.label}
+                onClick={() => s.path && navigate(s.path)}
+                className={cn('rounded-xl p-3 flex flex-col items-center gap-2', s.color)}
+              >
+                <s.icon className="w-5 h-5" />
+                <span className="text-[10px] font-display font-bold">{s.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 3. Recommended Actions (last) */}
+        <div className="pb-4">
           <h2 className="font-display font-bold text-base text-foreground mb-3">Recommended Actions</h2>
           <div className="space-y-2">
             <div className="bg-expiring/10 rounded-xl p-3 flex items-center gap-3">
@@ -100,23 +117,6 @@ const Home = () => {
                 <p className="text-[10px] text-muted-foreground">Earn 10 points per pack</p>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Feature shortcuts */}
-        <div>
-          <h2 className="font-display font-bold text-base text-foreground mb-3">Quick Access</h2>
-          <div className="grid grid-cols-3 gap-3 pb-4">
-            {shortcuts.map(s => (
-              <button
-                key={s.label}
-                onClick={() => s.path && navigate(s.path)}
-                className={cn('rounded-xl p-3 flex flex-col items-center gap-2', s.color)}
-              >
-                <s.icon className="w-5 h-5" />
-                <span className="text-[10px] font-display font-bold">{s.label}</span>
-              </button>
-            ))}
           </div>
         </div>
       </div>
