@@ -52,7 +52,7 @@ const Home = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-3 md:gap-4">
           {[{
           label: 'Tracked',
           value: '3',
@@ -76,13 +76,13 @@ const Home = () => {
       <div className="px-4 -mt-4 space-y-5 my-0">
         {/* 1. My Products with bar-shaped filter tabs */}
         <div>
-          <h2 className="font-display font-bold text-base text-foreground mb-3">My Products</h2>
+          <h2 className="font-display font-bold text-base text-foreground mb-[12px] mt-[20px]">My Products</h2>
           <div className="flex bg-muted rounded-xl p-1 mb-3">
             {filters.map(f => <button key={f} onClick={() => setActiveFilter(f)} className={cn('flex-1 py-2 rounded-lg text-xs font-display font-bold transition-all', activeFilter === f ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground')}>
                 {f}
               </button>)}
           </div>
-          <div className="space-y-3">
+          <div className="space-y-3 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 lg:grid-cols-3">
             {products.map((product, i) => <motion.div key={product.id} initial={{
             opacity: 0,
             y: 10
@@ -100,7 +100,7 @@ const Home = () => {
         {/* 2. Quick Access */}
         <div>
           <h2 className="font-display font-bold text-base text-foreground mb-3">Quick Access</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
             {shortcuts.map(s => <button key={s.label} onClick={() => s.path && navigate(s.path)} className={cn('rounded-xl p-3 flex flex-col items-center gap-2', s.color)}>
                 <s.icon className="w-5 h-5" />
                 <span className="text-[10px] font-display font-bold">{s.label}</span>
@@ -111,7 +111,7 @@ const Home = () => {
         {/* 3. Recommended Actions (last) */}
         <div className="pb-4">
           <h2 className="font-display font-bold text-base text-foreground mb-3">Recommended Actions</h2>
-          <div className="space-y-2">
+          <div className="space-y-2 md:grid md:grid-cols-2 md:gap-3 md:space-y-0">
             <div className="bg-expiring/10 rounded-xl p-3 flex items-center gap-3">
               <AlertTriangle className="w-5 h-5 text-expiring flex-shrink-0" />
               <div>
