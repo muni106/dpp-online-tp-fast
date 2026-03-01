@@ -2,11 +2,18 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
 
 const Auth = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = () => {
+    login();
+    navigate('/home');
+  };
 
   return (
     <div className="min-h-screen max-w-md mx-auto bg-background">
@@ -68,7 +75,7 @@ const Auth = () => {
             )}
 
             <button
-              onClick={() => navigate('/home')}
+              onClick={handleSubmit}
               className="w-full bg-accent text-accent-foreground font-display font-bold py-3.5 rounded-xl text-sm shadow-md hover:opacity-90 transition-opacity"
             >
               {mode === 'login' ? 'Sign In' : 'Create Account'}
@@ -81,10 +88,10 @@ const Auth = () => {
             </div>
 
             <div className="flex gap-3">
-              <button className="flex-1 bg-card border border-border rounded-xl py-3 text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-muted transition-colors">
+              <button onClick={handleSubmit} className="flex-1 bg-card border border-border rounded-xl py-3 text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-muted transition-colors">
                 🍎 Apple
               </button>
-              <button className="flex-1 bg-card border border-border rounded-xl py-3 text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-muted transition-colors">
+              <button onClick={handleSubmit} className="flex-1 bg-card border border-border rounded-xl py-3 text-sm font-medium text-foreground flex items-center justify-center gap-2 hover:bg-muted transition-colors">
                 🔵 Google
               </button>
             </div>

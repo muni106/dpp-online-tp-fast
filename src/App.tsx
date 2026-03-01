@@ -12,8 +12,34 @@ import Rewards from "./pages/Rewards";
 import Community from "./pages/Community";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { GuestLockedPage } from "./components/GuestLockedPage";
 
 const queryClient = new QueryClient();
+
+// Route guard: shows locked page for guests
+const ProtectedRoute = ({ element, pageName }: { element: JSX.Element; pageName: string }) => {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? element : <GuestLockedPage pageName={pageName} />;
+};
+
+const AppRoutes = () => (
+  <Routes>
+    {/* Always accessible */}
+    <Route path="/" element={<Index />} />
+    <Route path="/product/:id" element={<ProductDetail />} />
+    <Route path="/auth" element={<Auth />} />
+    <Route path="/profile" element={<Profile />} />
+
+    {/* Locked for guests */}
+    <Route path="/home" element={<ProtectedRoute element={<Home />} pageName="Home Dashboard" />} />
+    <Route path="/rewards" element={<ProtectedRoute element={<Rewards />} pageName="Rewards" />} />
+    <Route path="/community" element={<ProtectedRoute element={<Community />} pageName="Community" />} />
+    <Route path="/compare" element={<ProtectedRoute element={<Compare />} pageName="Compare" />} />
+
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -21,17 +47,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="/compare" element={<Compare />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/rewards" element={<Rewards />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
